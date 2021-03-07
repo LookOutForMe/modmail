@@ -300,7 +300,11 @@ class Thread:
         #     embed.add_field(name='Mention', value=user.mention)
         # embed.add_field(name='Registered', value=created + days(created))
 
-        footer = "User ID: " + str(user.id)
+        if user.dm_channel:
+            footer = f"User ID: {user.id} • DM ID: {user.dm_channel}"
+        else:
+            footer = f"User ID: {user.id}"
+
         embed.set_author(name=str(user), icon_url=user.avatar_url, url=log_url)
         # embed.set_thumbnail(url=avi)
 
@@ -1157,7 +1161,7 @@ class ThreadManager:
             recipient = None
 
         if recipient is None:
-            self.cache[user_id] = thread = Thread(self, user_id, channel)
+            thread = Thread(self, user_id, channel)
         else:
             self.cache[user_id] = thread = Thread(self, recipient, channel)
         thread.ready = True
